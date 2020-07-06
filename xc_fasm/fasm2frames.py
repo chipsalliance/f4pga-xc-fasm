@@ -40,9 +40,8 @@ def dump_frames_verbose(frames):
     print("Frames: %d" % len(frames))
     for addr in sorted(frames.keys()):
         words = frames[addr]
-        print(
-            '0x%08X ' % addr + ', '.join(['0x%08X' % w for w in words]) +
-            '...')
+        print('0x%08X ' % addr + ', '.join(['0x%08X' % w
+                                            for w in words]) + '...')
 
 
 def dump_frames_sparse(frames):
@@ -68,8 +67,8 @@ def dump_frm(f, frames):
     '''Write a .frm file given a list of frames, each containing a list of 101 32 bit words'''
     for addr in sorted(frames.keys()):
         words = frames[addr]
-        f.write(
-            '0x%08X ' % addr + ','.join(['0x%08X' % w for w in words]) + '\n')
+        f.write('0x%08X ' % addr + ','.join(['0x%08X' % w
+                                             for w in words]) + '\n')
 
 
 def find_pudc_b(db):
@@ -88,8 +87,8 @@ def find_pudc_b(db):
 
         for site, pin_function in gridinfo.pin_functions.items():
             if 'PUDC_B' in pin_function:
-                assert pudc_b_tile_site == None, (
-                    pudc_b_tile_site, (tile, site))
+                assert pudc_b_tile_site == None, (pudc_b_tile_site, (tile,
+                                                                     site))
                 iob_y = int(site[-1]) % 2
 
                 pudc_b_tile_site = (tile, 'IOB_Y{}'.format(iob_y))
@@ -109,8 +108,7 @@ def get_iob_sites(db, tile_name):
         yield "IOB_Y{}".format(site_y)
 
 
-def run(
-        db_root,
+def run(db_root,
         part,
         filename_in,
         f_out,
@@ -300,8 +298,7 @@ def main():
         help='Output FPGA frame (.frm) file')
 
     args = parser.parse_args()
-    run(
-        db_root=args.db_root,
+    run(db_root=args.db_root,
         part=args.part,
         filename_in=args.fn_in,
         f_out=open(args.fn_out, 'w'),
