@@ -18,7 +18,7 @@ import unittest
 import tempfile
 
 import prjxray
-import xc_fasm.fasm2frames as fasm2frames
+from xc_fasm.fasm2frames import fasm2frames
 
 from textx.exceptions import TextXSyntaxError
 
@@ -72,23 +72,23 @@ class TestStringMethods(unittest.TestCase):
         with open(self.filename_test_data(fname)) as f:
             return f.read()
 
-    def fasm2frames(self, fin_data, **kw):
+    def run_fasm2frames(self, fin_data, **kw):
         with tempfile.NamedTemporaryFile(suffix='.fasm') as fin:
             fin.write(fin_data.encode('utf-8'))
             fin.flush()
 
             fout = StringIO()
-            fasm2frames.run(
+            fasm2frames(
                 self.filename_test_data('db'), "xc7", fin.name, fout, **kw)
 
             return fout.getvalue()
 
     def test_lut(self):
         '''Simple smoke test on just the LUTs'''
-        self.fasm2frames(self.get_test_data('lut.fasm'))
+        self.run_fasm2frames(self.get_test_data('lut.fasm'))
 
     def bitread_frm_equals(self, frm_fn, bitread_fn):
-        fout = self.fasm2frames(self.get_test_data(frm_fn))
+        fout = self.run_fasm2frames(self.get_test_data(frm_fn))
 
         # Build a list of output used bits
         bits_out = frm2bits(fout)
@@ -114,18 +114,18 @@ class TestStringMethods(unittest.TestCase):
     # Same check as above, but isolated test case
     def test_opkey_01_default(self):
         '''Optional key with binary omitted value should produce valid result'''
-        self.fasm2frames("CLBLM_L_X10Y102.SLICEM_X0.SRUSEDMUX")
+        self.run_fasm2frames("CLBLM_L_X10Y102.SLICEM_X0.SRUSEDMUX")
 
     @unittest.skip
     def test_opkey_01_1(self):
-        self.fasm2frames("CLBLM_L_X10Y102.SLICEM_X0.SRUSEDMUX 1")
+        self.run_fasm2frames("CLBLM_L_X10Y102.SLICEM_X0.SRUSEDMUX 1")
 
     @unittest.skip
     def test_opkey_enum(self):
         '''Optional key with enumerated value should produce syntax error'''
         try:
             # CLBLM_L.SLICEM_X0.AMUXFF.O6 !30_06 !30_07 !30_08 30_11
-            self.fasm2frames("CLBLM_L_X10Y102.SLICEM_X0.AFFMUX.O6")
+            self.run_fasm2frames("CLBLM_L_X10Y102.SLICEM_X0.AFFMUX.O6")
             self.fail("Expected syntax error")
         except TextXSyntaxError:
             pass
@@ -137,7 +137,7 @@ class TestStringMethods(unittest.TestCase):
     def test_badkey(self):
         '''Bad key should throw syntax error'''
         try:
-            self.fasm2frames("CLBLM_L_X10Y102.SLICEM_X0.SRUSEDMUX 2")
+            self.run_fasm2frames("CLBLM_L_X10Y102.SLICEM_X0.SRUSEDMUX 2")
             self.fail("Expected syntax error")
         except TextXSyntaxError:
             pass
@@ -146,7 +146,7 @@ class TestStringMethods(unittest.TestCase):
     def test_dupkey(self):
         '''Duplicate key should throw syntax error'''
         try:
-            self.fasm2frames("""\
+            self.run_fasm2frames("""\
 CLBLM_L_X10Y102.SLICEM_X0.SRUSEDMUX 0
 CLBLM_L_X10Y102.SLICEM_X0.SRUSEDMUX 1
 """)
@@ -159,11 +159,11 @@ CLBLM_L_X10Y102.SLICEM_X0.SRUSEDMUX 1
         '''Verify sparse equivalent to normal encoding'''
         frm_fn = 'lut_int.fasm'
 
-        fout_sparse_txt = self.fasm2frames(
+        fout_sparse_txt = self.run_fasm2frames(
             self.get_test_data(frm_fn), sparse=True)
         bits_sparse = frm2bits(fout_sparse_txt)
 
-        fout_full_txt = self.fasm2frames(
+        fout_full_txt = self.run_fasm2frames(
             self.get_test_data(frm_fn), sparse=False)
         bits_full = frm2bits(fout_full_txt)
 

@@ -14,7 +14,7 @@ import subprocess
 import os
 
 from prjxray import util
-from fasm2frames import fasm2frames
+from .fasm2frames import fasm2frames
 
 
 def main():
