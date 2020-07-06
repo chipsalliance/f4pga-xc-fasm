@@ -34,6 +34,7 @@ setuptools.setup(
         "simplejson",
         "textx",
         "prjxray@git+git://github.com/SymbiFlow/prjxray.git#egg=prjxray",
+        "fasm@git+git://github.com/SymbiFlow/fasm.git#egg=fasm",
     ],
     entry_points={
         'console_scripts': ['fasm2frames=xc_fasm.fasm2frames:main'],
