@@ -37,5 +37,5 @@ setuptools.setup(
         "fasm@git+git://github.com/SymbiFlow/fasm.git#egg=fasm",
     ],
     entry_points={
-        'console_scripts': ['fasm2frames=xc_fasm.fasm2frames:main'],
+        'console_scripts': ['xcfasm=xc_fasm.xc_fasm:main'],
     })

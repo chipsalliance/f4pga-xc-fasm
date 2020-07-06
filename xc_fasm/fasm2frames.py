@@ -108,14 +108,14 @@ def get_iob_sites(db, tile_name):
         yield "IOB_Y{}".format(site_y)
 
 
-def run(db_root,
-        part,
-        filename_in,
-        f_out,
-        sparse=False,
-        roi=None,
-        debug=False,
-        emit_pudc_b_pullup=False):
+def fasm2frames(db_root,
+                part,
+                filename_in,
+                f_out=None,
+                sparse=False,
+                roi=None,
+                debug=False,
+                emit_pudc_b_pullup=False):
     db = Database(db_root, part)
     assembler = fasm_assembler.FasmAssembler(db)
 
@@ -268,7 +268,10 @@ def run(db_root,
     if debug:
         dump_frames_sparse(frames)
 
-    dump_frm(f_out, frames)
+    if f_out is not None:
+        dump_frm(f_out, frames)
+
+    return frames
 
 
 def main():
@@ -298,7 +301,8 @@ def main():
         help='Output FPGA frame (.frm) file')
 
     args = parser.parse_args()
-    run(db_root=args.db_root,
+    fasm2frames(
+        db_root=args.db_root,
         part=args.part,
         filename_in=args.fn_in,
         f_out=open(args.fn_out, 'w'),
