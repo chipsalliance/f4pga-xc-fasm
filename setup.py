@@ -30,6 +30,9 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     install_requires=[
+        "intervaltree",
+        "simplejson",
+        "textx",
         "prjxray@git+git://github.com/SymbiFlow/prjxray.git#egg=prjxray",
     ],
     entry_points={

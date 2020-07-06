@@ -1,0 +1,5 @@
+textx
+simplejson
+intervaltree
+-e git://github.com/SymbiFlow/prjxray.git#egg=prjxray
+yapf==0.24.0
