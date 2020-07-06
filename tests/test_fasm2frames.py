@@ -18,7 +18,7 @@ import unittest
 import tempfile
 
 import prjxray
-import utils.fasm2frames as fasm2frames
+import xc_fasm.fasm2frames as fasm2frames
 
 from textx.exceptions import TextXSyntaxError
 
@@ -78,8 +78,8 @@ class TestStringMethods(unittest.TestCase):
             fin.flush()
 
             fout = StringIO()
-            fasm2frames.run(
-                self.filename_test_data('db'), "xc7", fin.name, fout, **kw)
+            fasm2frames.run(self.filename_test_data('db'), "xc7", fin.name,
+                            fout, **kw)
 
             return fout.getvalue()
 
@@ -146,8 +146,7 @@ class TestStringMethods(unittest.TestCase):
     def test_dupkey(self):
         '''Duplicate key should throw syntax error'''
         try:
-            self.fasm2frames(
-                """\
+            self.fasm2frames("""\
 CLBLM_L_X10Y102.SLICEM_X0.SRUSEDMUX 0
 CLBLM_L_X10Y102.SLICEM_X0.SRUSEDMUX 1
 """)
@@ -160,12 +159,12 @@ CLBLM_L_X10Y102.SLICEM_X0.SRUSEDMUX 1
         '''Verify sparse equivalent to normal encoding'''
         frm_fn = 'lut_int.fasm'
 
-        fout_sparse_txt = self.fasm2frames(
-            self.get_test_data(frm_fn), sparse=True)
+        fout_sparse_txt = self.fasm2frames(self.get_test_data(frm_fn),
+                                           sparse=True)
         bits_sparse = frm2bits(fout_sparse_txt)
 
-        fout_full_txt = self.fasm2frames(
-            self.get_test_data(frm_fn), sparse=False)
+        fout_full_txt = self.fasm2frames(self.get_test_data(frm_fn),
+                                         sparse=False)
         bits_full = frm2bits(fout_full_txt)
 
         # Now check for equivilence vs reference design
@@ -177,12 +176,12 @@ CLBLM_L_X10Y102.SLICEM_X0.SRUSEDMUX 1
         self.assertGreaterEqual(len(fout_full_txt), len(fout_sparse_txt) * 4)
 
     def test_stepdown_1(self):
-        self.bitread_frm_equals(
-            'iob/liob_stepdown.fasm', 'iob/liob_stepdown.bits')
+        self.bitread_frm_equals('iob/liob_stepdown.fasm',
+                                'iob/liob_stepdown.bits')
 
     def test_stepdown_2(self):
-        self.bitread_frm_equals(
-            'iob/riob_stepdown.fasm', 'iob/riob_stepdown.bits')
+        self.bitread_frm_equals('iob/riob_stepdown.fasm',
+                                'iob/riob_stepdown.bits')
 
 
 if __name__ == '__main__':
