@@ -12,6 +12,7 @@
 import argparse
 import subprocess
 import os
+import tempfile
 
 from prjxray import util
 from .fasm2frames import fasm2frames
@@ -37,28 +38,35 @@ def main():
         action='store_true')
     parser.add_argument(
         '--debug', action='store_true', help="Print debug dump")
+    parser.add_argument(
+        '--frm2bit', default="xc7frames2bit", help="xc7frames2bit tool.")
     parser.add_argument('--fn_in', help='Input FPGA assembly (.fasm) file')
     parser.add_argument('--bit_out', help='Output FPGA bitstream (.bit) file')
     parser.add_argument(
         '--frm_out',
-        default='/dev/stdout',
+        default=None,
         nargs='?',
         help='Output FPGA frame (.frm) file')
 
     args = parser.parse_args()
+
+    frm_out = args.frm_out
+    if frm_out is None:
+        _, frm_out = tempfile.mkstemp()
+
     fasm2frames(
         db_root=args.db_root,
         part=args.part,
         filename_in=args.fn_in,
-        f_out=open(args.frm_out, 'w'),
+        f_out=open(frm_out, 'w'),
         sparse=args.sparse,
         roi=args.roi,
         debug=args.debug,
         emit_pudc_b_pullup=args.emit_pudc_b_pullup)
 
     result = subprocess.check_output(
-        "xc7frames2bit --frm_file {} --output_file {} --part_name {} --part_file {}"
-        .format(args.frm_out, args.bit_out, args.part, args.part_file),
+        "{} --frm_file {} --output_file {} --part_name {} --part_file {}".
+        format(args.frm2bit, frm_out, args.bit_out, args.part, args.part_file),
         shell=True)
 
 
