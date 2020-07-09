@@ -43,10 +43,7 @@ def main():
     parser.add_argument('--fn_in', help='Input FPGA assembly (.fasm) file')
     parser.add_argument('--bit_out', help='Output FPGA bitstream (.bit) file')
     parser.add_argument(
-        '--frm_out',
-        default=None,
-        nargs='?',
-        help='Output FPGA frame (.frm) file')
+        '--frm_out', default=None, help='Output FPGA frame (.frm) file')
 
     args = parser.parse_args()
 
@@ -54,15 +51,17 @@ def main():
     if frm_out is None:
         _, frm_out = tempfile.mkstemp()
 
+    f_out = open(frm_out, 'w')
     fasm2frames(
         db_root=args.db_root,
         part=args.part,
         filename_in=args.fn_in,
-        f_out=open(frm_out, 'w'),
+        f_out=f_out,
         sparse=args.sparse,
         roi=args.roi,
         debug=args.debug,
         emit_pudc_b_pullup=args.emit_pudc_b_pullup)
+    f_out.close()
 
     result = subprocess.check_output(
         "{} --frm_file {} --output_file {} --part_name {} --part_file {}".
