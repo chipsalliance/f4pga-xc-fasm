@@ -1,5 +1,7 @@
 textx
 simplejson
 intervaltree
+git+git://github.com/SymbiFlow/fasm.git#egg=fasm
+git+git://github.com/SymbiFlow/prjxray.git#egg=prjxray
 -e .
 yapf==0.24.0

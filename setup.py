@@ -33,8 +33,8 @@ setuptools.setup(
         "intervaltree",
         "simplejson",
         "textx",
-        "prjxray@git+git://github.com/SymbiFlow/prjxray.git#egg=prjxray",
-        "fasm@git+git://github.com/SymbiFlow/fasm.git#egg=fasm",
+        "prjxray",
+        "fasm",
     ],
     entry_points={
         'console_scripts': ['xcfasm=xc_fasm.xc_fasm:main'],
