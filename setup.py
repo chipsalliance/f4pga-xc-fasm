@@ -34,8 +34,7 @@ setuptools.setup(
         "simplejson",
         "textx",
         "prjxray",
-        "fasm",
-    ],
+        "fasm",],
     entry_points={
         'console_scripts': ['xcfasm=xc_fasm.xc_fasm:main'],
     })
