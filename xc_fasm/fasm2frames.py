@@ -193,7 +193,7 @@ def fasm2frames(db_root,
         # unclear how to know which IOSTANDARD to use.
         missing_features = []
         for line in fasm.parse_fasm_string("""
-{tile}.{site}.LVCMOS12_LVCMOS15_LVCMOS18_LVCMOS25_LVCMOS33_LVTTL_SSTL135_SSTL15.IN_ONLY
+{tile}.{site}.LVCMOS12_LVCMOS15_LVCMOS18_LVCMOS25_LVCMOS33_LVDS_25_LVTTL_SSTL135_SSTL15_TMDS_33.IN_ONLY
 {tile}.{site}.LVCMOS25_LVCMOS33_LVTTL.IN
 {tile}.{site}.PULLTYPE.PULLUP
 """.format(
