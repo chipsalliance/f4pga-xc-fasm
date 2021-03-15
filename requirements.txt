@@ -1,3 +1,4 @@
+pyyaml
 git+https://github.com/SymbiFlow/fasm.git#egg=fasm
 git+https://github.com/SymbiFlow/prjxray.git#egg=prjxray
 -e .
