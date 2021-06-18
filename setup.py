@@ -37,5 +37,8 @@ setuptools.setup(
         "fasm",
     ],
     entry_points={
-        'console_scripts': ['xcfasm=xc_fasm.xc_fasm:main'],
+        'console_scripts': [
+            'xcfasm=xc_fasm.xc_fasm:main',
+            'bit2fasm=xc_fasm.bit2fasm:main',
+        ],
     })
