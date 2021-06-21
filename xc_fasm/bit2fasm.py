@@ -16,6 +16,7 @@ import argparse
 import contextlib
 import os
 import subprocess
+import sys
 import tempfile
 
 import fasm
@@ -37,7 +38,7 @@ def bit_to_bits(bitread, part_yaml, bit_file, bits_file, frame_range=None):
         shell=True)
 
 
-def bits_to_fasm(db_root, part, bits_file, verbose, canonical):
+def bits_to_fasm(db_root, part, bits_file, verbose, canonical, fasm_file):
     db = Database(db_root, part)
     grid = db.grid()
     disassembler = fasm_disassembler.FasmDisassembler(db)
@@ -51,7 +52,10 @@ def bits_to_fasm(db_root, part, bits_file, verbose, canonical):
         sort_key=grid.tile_key,
     )
 
-    print(fasm.fasm_tuple_to_string(model, canonical=canonical), end='')
+    print(
+        fasm.fasm_tuple_to_string(model, canonical=canonical),
+        end='',
+        file=fasm_file)
 
 
 def main():
@@ -76,6 +80,11 @@ def main():
         action='store_true')
     parser.add_argument(
         '--canonical', help='Output canonical bitstream.', action='store_true')
+    parser.add_argument(
+        '--fasm_file',
+        type=argparse.FileType('w'),
+        help='Output FASM file',
+        default=sys.stdout)
 
     args = parser.parse_args()
 
@@ -94,7 +103,7 @@ def main():
         )
 
         bits_to_fasm(args.db_root, args.part, bits_file.name, args.verbose,
-                     args.canonical)
+                     args.canonical, args.fasm_file)
 
 
 if __name__ == '__main__':
