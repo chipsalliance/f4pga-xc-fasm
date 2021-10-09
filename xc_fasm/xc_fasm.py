@@ -26,7 +26,7 @@ def main():
 
     util.db_root_arg(parser)
     util.part_arg(parser)
-    parser.add_argument('--part_file', required=True, help="Part YAML file.")
+    parser.add_argument('--part-dir', required=True, help="Part directory")
     parser.add_argument(
         '--sparse', action='store_true', help="Don't zero fill all frames")
     parser.add_argument(
@@ -55,6 +55,7 @@ def main():
     fasm2frames(
         db_root=args.db_root,
         part=args.part,
+        part_dir=args.part_dir,
         filename_in=args.fn_in,
         f_out=f_out,
         sparse=args.sparse,
@@ -63,9 +64,11 @@ def main():
         emit_pudc_b_pullup=args.emit_pudc_b_pullup)
     f_out.close()
 
+    part_yaml = os.path.join(args.part_dir, "part.yaml")
+
     result = subprocess.check_output(
         "{} --frm_file {} --output_file {} --part_name {} --part_file {}".
-        format(args.frm2bit, frm_out, args.bit_out, args.part, args.part_file),
+        format(args.frm2bit, frm_out, args.bit_out, args.part, part_yaml),
         shell=True)
 
 
