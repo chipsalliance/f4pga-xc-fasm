@@ -34,7 +34,7 @@ def main():
 
     util.db_root_arg(parser)
     util.part_arg(parser)
-    parser.add_argument('--part_file', required=True, help="Part YAML file.")
+    parser.add_argument('--part_file', help="Part YAML file.")
     parser.add_argument(
         '--sparse', action='store_true', help="Don't zero fill all frames")
     parser.add_argument(
@@ -54,6 +54,8 @@ def main():
         '--frm_out', default=None, help='Output FPGA frame (.frm) file')
 
     args = parser.parse_args()
+    if args.part_file is None:
+        args.part_file = os.path.join(args.db_root, args.part, "part.yaml")
 
     frm_out = args.frm_out
     if frm_out is None:
