@@ -119,6 +119,8 @@ def get_iob_sites(db, tile_name):
 def fasm2frames(db_root,
                 part,
                 filename_in,
+                pins_file = None,
+                part_dir = None,
                 f_out=None,
                 sparse=False,
                 roi=None,
@@ -139,11 +141,15 @@ def fasm2frames(db_root,
     bank_to_tile = defaultdict(lambda: set())
 
     if part is not None:
-        with open(os.path.join(db_root, part, "package_pins.csv"), "r") as fp:
+        part_dir = part_dir or os.path.join(db_root, part)
+
+        pins_file = os.path.join(part_dir, "package_pins.csv")
+        with open(pins_file, "r") as fp:
             reader = csv.DictReader(fp)
             package_pins = [l for l in reader]
 
-        with open(os.path.join(db_root, part, "part.json"), "r") as fp:
+        part_file = os.path.join(part_dir, "part.json")
+        with open(part_file, "r") as fp:
             part_data = json.load(fp)
 
         for bank, loc in part_data["iobanks"].items():
