@@ -25,12 +25,12 @@ with open("README.md", "r") as fh:
 setuptools.setup(
     name="xc-fasm",
     version="0.0.1",
-    author="SymbiFlow Authors",
-    author_email="symbiflow@lists.librecores.org",
+    author="F4PGA Authors",
+    author_email="f4pga-wg@lists.chipsalliance.org",
     description="XC FASM libraries",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/SymbiFlow/xc-fasm",
+    url="https://github.com/chipsalliance/xc-fasm",
     packages=['xc_fasm'],
     classifiers=[
         "Programming Language :: Python :: 3",
